@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Cộng 2 số";
+}
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="text-center">Tính Tổng Hai Số</h4>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Add" method="get">
+                            <div class="mb-3">
+                                <label for="a" class="form-label">Số a</label>
+                                <input type="number" name="a" id="a" class="form-control" placeholder="Nhập số a" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="b" class="form-label">Số b</label>
+                                <input type="number" name="b" id="b" class="form-control" placeholder="Nhập số b" required />
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Tính Tổng</button>
+                            </div>
+                        </form>
+
+                        @if (ViewData["tổng"] != null)
+                        {
+                            <div class="alert alert-success mt-3 text-center">
+                                @ViewData["tổng"]
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

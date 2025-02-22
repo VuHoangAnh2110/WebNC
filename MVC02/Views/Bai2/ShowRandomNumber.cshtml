@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Random Numbers";
+    var randomNumbers = ViewData["randomNumbers"] as List<int>;
+    var error = ViewData["thông báo"] as string;
+}
+
+<div class="container py-2 px-5">
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @error
+        </div>
+    }
+    else if (randomNumbers != null && randomNumbers.Count > 0)
+    {
+        <div class="card mt-2 px-3">
+            <div class="card-body">
+                <h5 class="card-title">Danh sách số ngẫu nhiên:</h5>
+                <ul class="list-group px-5">
+                    @foreach (var number in randomNumbers)
+                    {
+                        <li class="list-group-item">@number</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Không có dữ liệu để hiển thị.</p>
+    }
+</div>

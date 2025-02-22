@@ -1,0 +1,85 @@
+@{
+    ViewData["Title"] = "Register";
+}
+
+<br>
+<div class="">
+
+    @* @if (!string.IsNullOrEmpty(@ViewData["thongbao"].ToString()))
+    {
+        <div class="alert alert-info">@ViewData["thongbao"]</div>
+    } *@
+
+    <div class="container py-2">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form asp-action="Receive" onsubmit="return checkForm()" method="post" class="p-4 border rounded shadow bg-white">
+                    <h2 class="text-center mb-4">Form Nhập Thông Tin</h2>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Nhập username" required>
+                        <small id="usernameError" class="text-danger"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="text" class="form-control" id="password" name="password" placeholder="Nhập password" required>
+                        <small id="passwordError" class="text-danger"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" required>
+                        <small id="emailError" class="text-danger"></small>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Gửi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkForm() {
+        let check = true;
+
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        document.getElementById('usernameError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('emailError').classList.remove('is-invalid');
+
+        if (!username) {
+            document.getElementById('usernameError').textContent = 'Username không được để trống.';
+            check = false;
+        }
+
+        const passwordRegex = /[0-9]/;    
+        if (password.length < 8) {
+            document.getElementById('passwordError').textContent = 'Password phải có ít nhất 8 ký tự.';
+            check = false;
+        } else if (!passwordRegex.test(password)) {
+            document.getElementById('passwordError').textContent = 'Password phải chứa ít nhất một chữ số.';
+            check = false;
+        }
+
+        const emailRegex = /^[^\s\u0040]+\u0040[^\s\u0040]+\.[^\s\u0040]+$/;
+        if (!emailRegex.test(email)) {
+            document.getElementById('emailError').textContent = 'Email không hợp lệ. Vui lòng nhập lại.';
+            document.getElementById('emailError').classList.add('is-invalid'); // Thêm class Bootstrap để hiển thị lỗi
+            check = false;
+        } else {
+            document.getElementById('emailError').classList.add('is-valid'); // Thêm class Bootstrap để đánh dấu hợp lệ
+        }
+
+        return check;
+    }
+    
+</script>

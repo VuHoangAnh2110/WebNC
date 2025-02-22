@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Nhập thông tin tìm số";
+}    
+    
+    <div class="container py-2">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form asp-action="GetRandomNumbers" onsubmit="return checkForm()" method="post" class="p-4 border rounded shadow bg-white">
+                    <h2 class="text-center mb-4">Form Nhập Tìm Số</h2>
+
+                    <div class="mb-3">
+                        <label for="lb" class="form-label">Lower Bound: </label>
+                        <input type="text" class="form-control" id="lb" name="lb" placeholder="Nhập Lower bound" required>
+                        <small id="lbError" class="text-danger"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ub" class="form-label">Upper Bound:</label>
+                        <input type="text" class="form-control" id="ub" name="ub" placeholder="Nhập Upper bound" required>
+                        <small id="ubError" class="text-danger"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="inputN" class="form-label">N: </label>
+                        <input type="text" class="form-control" id="inputN" name="n" placeholder="Nhập số n" required>
+                        <small id="inputNError" class="text-danger"></small>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Gửi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function checkForm() {
+        const lowerBound = parseInt(document.getElementById("lb").value, 10);
+        const upperBound = parseInt(document.getElementById("ub").value, 10);
+        const numberCount = parseInt(document.getElementById("inputN").value, 10);
+
+        let check = true;
+
+        document.getElementById("lbError").textContent = "";
+        document.getElementById("ubError").textContent = "";
+        document.getElementById("inputNError").textContent = "";
+
+        if (isNaN(lowerBound) || isNaN(upperBound) || lowerBound > upperBound) {
+            document.getElementById("ubError").textContent = "Upper Bound không được nhỏ hơn Lower Bound.";
+            check = false;
+        }
+
+        if (isNaN(numberCount) || numberCount <= 0) {
+            document.getElementById("nError").textContent = "Số nhập N phải lớn hơn 0.";
+            check = false;
+        }
+
+        return check;
+    }
+</script>
