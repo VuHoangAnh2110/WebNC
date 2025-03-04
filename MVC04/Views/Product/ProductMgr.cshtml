@@ -23,13 +23,20 @@
                 int index = 1;
                 foreach (var product in Model)
                 {
-                    <tr class="text-center">
+                    <tr class="text-center" data-id="@product.ProductID">
                         <td>@index</td>
                         <td>@product.ProductName</td>
-                        <td>@product.ProductPrice.ToString("N0") đ</td>
+                        <td id="gia-@product.ProductID" class="d-flex justify-content-center align-items-center">
+                            <span class="ms-2 h-100">@product.ProductPrice.ToString("N0") đ</span>
+                            @if (product.ProductPrice >= 100000) {
+                                <button class="btn btn-link text-primary d-inline-flex align-items-center btn-giamgia ms-2"
+                                data-id="@product.ProductID" >Giảm giá</button>
+                            }
+                        </td>
                         <td>@product.Description</td>
                         <td>
-                            <a asp-action="Delete" asp-route-id="@product.ProductID" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?');">Xóa</a>
+                            <a asp-action="Delete" asp-route-id="@product.ProductID" class="btn btn-danger btn-sm" onclick="return confirm('Có chắc chắn xóa không?');">Xóa</a>
+                            <button class="btn btn-danger btn-sm btn-xoa-ajax" data-id="@product.ProductID" > Xóa Ajax</button>
                         </td>
                     </tr>
                     index++;
@@ -61,3 +68,87 @@
     <br>
     <a asp-action="NewProduct" class="btn btn-success">Thêm sản phẩm</a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".btn-xoa-ajax").forEach(button => {
+            button.addEventListener("click", function () {
+                let productID = this.getAttribute("data-id");
+                if (!confirm("Có chắc chắn xóa không?")) {
+                    return; 
+                }
+                // Gọi request ajax
+                fetch(`/Product/DeleteAjax/${productID}`, {
+                    method: "get",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(Response => {
+                    if (!Response.ok) {
+                        throw new Error("Xảy ra lỗi khi xóa!");
+                    }
+                    return Response.json();
+                })
+                .then(Data => {
+                    if (Data.success) {
+                        // alert("Xóa sản phẩm thành công!");
+                        // location.reload();
+                        let sanpham = document.querySelector(`tr[data-id='${productID}']`);
+                        if (sanpham) {
+                            sanpham.remove();
+                        } else {
+                            console.log("Chưa lấy được data-id ở client");
+                        }
+                    } else {
+                        alert("Chưa xóa được sản phẩm!");
+                    }
+                })
+                .catch(Error => {
+                    console.error("Lỗi: ", Error);
+                    alert("Xóa sản phẩm không thành công!");
+                });
+            });
+        });
+
+        document.querySelectorAll(".btn-giamgia").forEach(button => {
+            button.addEventListener("click", function () {
+                let productID = this.getAttribute("data-id");
+                if (!confirm("Có chắc chắn giảm giá không?")) {
+                    return; 
+                }
+                // Gọi request ajax
+                fetch(`/Product/GiamgiaAjax/${productID}`, {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(Response => {
+                    if (!Response.ok) {
+                        throw new Error("Xảy ra lỗi khi giảm giá!");
+                    }
+                    return Response.json();
+                })
+                .then(Data => {
+                    if (Data.success) {
+                        // location.reload();
+                        let donGia = Data.giaMoi.toLocaleString() + " đ";
+                        if (Data.giaMoi >= 100000) {
+                            donGia += `<button class="btn btn-link text-primary d-inline-flex align-items-center btn-giamgia ms-2"
+                                        data-id="${productID}">Giảm giá</button>`;
+                        }
+                        this.closest("td").innerHTML = donGia;
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(Error => {
+                    console.error("Lỗi: ", Error);
+                    alert("Giảm giá không thành công!");
+                });
+            });
+        });
+    });
+
+</script>
