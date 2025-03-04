@@ -81,7 +81,47 @@ public class ProductController : Controller
         return RedirectToAction("ProductMgr");
     }
 
+    [HttpGet]
+    public IActionResult DeleteAjax (int id) {
+        var product = _productRepository.GetProductById(id);
+        if (product != null) {
+            _productRepository.DeleteProduct(id);
+            _productRepository.Save();
+            return Json(new {success = true, message = "Xóa sản phẩm thành công."});
+        } else {
+            return Json(new {success = false, message = "Xóa sản phẩm không thành công."});
+        }
+    }
 
+    public IActionResult Giamgia (int id){
+        var product = _productRepository.GetProductById(id);
+        var gia = 1;
+        if (product != null) {
+            if (product.ProductPrice >= 100000){
+                gia = (int)(product.ProductPrice * 0.9m);
+            }
+            return Json(new { success = true, giaMoi = gia });
+        } else {
+            return Json(new { success = false, message = "Lỗi giảm giá." });
+        }
+    }
 
+    [HttpPost]
+    public IActionResult GiamgiaAjax (int id) {
+        var product = _productRepository.GetProductById(id);
+        if (product != null) {
+            if (product.ProductPrice >= 100000)
+            {
+                product.ProductPrice = (int)(product.ProductPrice * 0.9m); 
+                _productRepository.Save(); 
+
+                return Json(new { success = true, giaMoi = product.ProductPrice });
+            } else {
+                return Json(new { success = false, message = "Không đủ điều kiện giảm giá." });
+            }
+        } else {
+            return Json(new { success = false, message = "Sản phẩm không tồn tại." });
+        }
+    }
 
 }
