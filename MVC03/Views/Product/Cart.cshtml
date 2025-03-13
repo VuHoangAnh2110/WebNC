@@ -1,0 +1,107 @@
+@model List<MVC03.Models.CartModel>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<div class="container mt-5">
+    <h3>Giỏ hàng của bạn</h3>
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-muted">Giỏ hàng trống.</p>
+    }
+    else
+    {
+        <table class="table table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng tiền</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><img src="@item.ImageURL" alt="@item.ProductName" class="img-thumbnail" style="width: 80px; height: 80px;"></td>
+                        <td>@item.ProductName</td>
+                        <td>@item.ProductPrice.ToString("N0") VND</td>
+                        <td>
+                            <input type="number" class="form-control quantity" data-id="@item.ProductID" value="@item.Quantity" min="1" style="width: 70px;">
+                        </td>
+                        <td>@((item.ProductPrice * item.Quantity).ToString("N0")) VND</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm remove-item" data-id="@item.ProductID">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button class="btn btn-warning" id="clear-cart">Xóa toàn bộ giỏ hàng</button>
+    }
+</div>
+
+<script>
+    function updateCartCount() {
+    fetch('/Product/GetCartCount')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("cart-count").textContent = data.count;
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+document.addEventListener("DOMContentLoaded", function () {
+    updateCartCount();
+    // Xóa một sản phẩm khỏi giỏ hàng
+    document.querySelectorAll(".remove-item").forEach(button => {
+        button.addEventListener("click", function () {
+            const productId = this.getAttribute("data-id");
+
+            fetch(`/Product/RemoveFromCart?id=${productId}`, {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload(); 
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+
+    // Cập nhật số lượng sản phẩm
+    document.querySelectorAll(".quantity").forEach(input => {
+        input.addEventListener("change", function () {
+            const productId = this.getAttribute("data-id");
+            const newQuantity = this.value;
+
+            fetch(`/Product/UpdateCart?id=${productId}&quantity=${newQuantity}`, {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+
+    // Xóa toàn bộ giỏ hàng
+    document.getElementById("clear-cart").addEventListener("click", function () {
+        fetch(`/Product/ClearCart`, {
+            method: "POST"
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+</script>

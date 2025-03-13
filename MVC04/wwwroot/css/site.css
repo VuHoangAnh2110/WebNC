@@ -18,5 +18,144 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 0px;
+}
+
+
+/* Footer Neon */
+.neon-footer {
+  background: #1a1a2e;
+  color: #e0e0e0;
+  box-shadow: 0 0 20px #0ff;
+}
+
+/* Tiêu đề Neon */
+.text-neon {
+  color: #0ff;
+  text-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
+}
+
+/* Đường kẻ phát sáng */
+.border-neon {
+  border-color: #0ff !important;
+  box-shadow: 0 0 8px #0ff;
+}
+
+/* Link trong Footer */
+.footer-link {
+  display: block;
+  color: #e0e0e0;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-link:hover {
+  color: #0ff;
+  text-shadow: 0 0 8px #0ff;
+}
+
+/* Icon mạng xã hội */
+.social-icon {
+  font-size: 24px;
+  margin: 0 10px;
+  color: #e0e0e0;
+  transition: 0.3s;
+}
+
+.social-icon:hover {
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff;
+}
+
+.background {
+  background: linear-gradient(to right, #84fab0, #8fd3f4);
+}
+
+/* Nền gradient đẹp */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card đăng nhập */
+.login-card {
+  width: 350px;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Hiệu ứng nút */
+.btn-hover {
+  transition: 0.3s;
+}
+
+.btn-hover:hover {
+  background-color: #004085;
+  transform: scale(1.05);
+}
+
+/* Chỉnh lại input */
+.form-control {
+  border-radius: 8px;
+}
+
+/* Nút mạng xã hội */
+.social-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.social-btn:hover {
+  transform: scale(1.1);
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px; /* Tạo khoảng cách với footer */
+}
+
+/* Header với màu nền nhạt */
+.navbar-light {
+  background: rgba(43, 42, 42, 0.9) !important; /* Nền trắng nhẹ */
+  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.2); /* Hiệu ứng bóng mờ xanh nhẹ */
+}
+
+/* Đường kẻ sáng nhẹ */
+.navbar-light .border-bottom {
+  border-color: rgba(0, 255, 255, 0.3) !important;
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
+}
+
+/* Link navbar */
+.navbar-light .nav-link {
+  color: #f1ecec !important;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.navbar-light .nav-link:hover {
+  color: #0ff !important;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.navbar-light .navbar-brand {
+  color: #f1ecec !important;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Nút đăng nhập */
+.navbar-light .btn-outline-primary {
+  border-color: #0ff;
+  color: #0ff;
+  transition: all 0.3s ease-in-out;
 }

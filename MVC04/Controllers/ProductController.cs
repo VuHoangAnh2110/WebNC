@@ -9,12 +9,14 @@ public class ProductController : Controller
 {
     private readonly AppDbContext _context;
     private readonly IProductRepository _productRepository;
+    private readonly INhanxetRepository _nhanxetRepository;
 
     // Gộp cả hai dependency vào một constructor
-    public ProductController(AppDbContext context, IProductRepository productRepository)
+    public ProductController(AppDbContext context, IProductRepository productRepository, INhanxetRepository nhanxetRepository)
     {
         _context = context;
         _productRepository = productRepository;
+        _nhanxetRepository = nhanxetRepository;
     }
 
     public IActionResult Index()
@@ -121,6 +123,80 @@ public class ProductController : Controller
             }
         } else {
             return Json(new { success = false, message = "Sản phẩm không tồn tại." });
+        }
+    }
+
+    public IActionResult ProductList(){
+        var products = _productRepository.GetAllProducts();
+        return View(products);
+    }
+
+    public IActionResult ProductDetail (int id) {
+        var product = _productRepository.GetProductById(id);
+
+        if (product == null) {
+            return NotFound();
+        }
+
+        var comments = _nhanxetRepository.GetCommentsByProductId(id);
+
+        // Gán danh sách bình luận vào ViewBag
+        ViewBag.Comments = comments;
+
+        return View(product);
+    }
+
+    // Nhận xét của tài khoản
+    [HttpPost]
+    public IActionResult AddComment([FromBody] Nhanxet commentData)
+    {
+        try
+        {
+            if (commentData == null || string.IsNullOrWhiteSpace(commentData.sNoidung))
+            {
+                return Json(new { success = false, message = "Nội dung bình luận không được để trống." });
+            }
+
+            var product = _productRepository.GetProductById(commentData.FK_iProductID);
+            if (product == null)
+            {
+                return Json(new { success = false, message = "Sản phẩm không tồn tại." });
+            }
+
+            var newComment = new Nhanxet
+            {
+                sNoidung = commentData.sNoidung,
+                tThoigianGhinhan = DateTime.Now,
+                FK_iProductID = commentData.FK_iProductID,
+                FK_MemberName = commentData.FK_MemberName
+            };
+
+            _nhanxetRepository.AddComment(newComment);
+            _nhanxetRepository.Save();
+
+            return Json(new
+            {
+                success = true,
+                message = "Bình luận đã được lưu.",
+                comment = new
+                {
+                    user = newComment.FK_MemberName,
+                    content = newComment.sNoidung,
+                    time = newComment.tThoigianGhinhan.ToString("dd/MM/yyyy HH:mm")
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            var newComment1 = new Nhanxet
+            {
+                sNoidung = commentData.sNoidung,
+                tThoigianGhinhan = DateTime.Now,
+                FK_iProductID = commentData.FK_iProductID,
+                FK_MemberName = commentData.FK_MemberName
+            };
+
+            return Json(new { success = false, message = "Lỗi server: " + ex.Message + newComment1.sNoidung});
         }
     }
 

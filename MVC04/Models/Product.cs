@@ -24,6 +24,9 @@ namespace MVC04.Models
         public decimal ProductPrice { get; set; }
 
         public string Description { get; set; }
+
+        // Navigation property
+        public virtual ICollection<Nhanxet> NhanXets { get; set; }
     }
 
 

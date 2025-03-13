@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Sử dụng layout chung
+}
+
+    <div class="login-container">
+        <div class="login-card shadow p-4 bg-white rounded">
+            <h3 class="text-center fw-bold text-primary">Đăng nhập</h3>
+            <p class="text-center text-muted">Chào mừng bạn quay trở lại!</p>
+
+            <form method="post" action="/Account/Login">
+                <div class="mb-3">
+                    <label for="Username" class="form-label">Tên đăng nhập</label>
+                    <input type="text" class="form-control" id="Username" name="Username" required="">
+                </div>
+                <div class="mb-3">
+                    <label for="Password" class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-control" id="Password" name="Password" required="">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 btn-hover">Đăng nhập</button>
+            </form>
+
+            <!-- Đăng nhập bằng mạng xã hội -->
+            <div class="social-login mt-4 text-center">
+                <p class="text-muted small">Hoặc đăng nhập với</p>
+                <div class="d-flex justify-content-center">
+                    <a href="#" class="btn btn-outline-primary social-btn me-2"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="btn btn-outline-danger social-btn me-2"><i class="bi bi-google"></i></a>
+                    <a href="#" class="btn btn-outline-info social-btn me-2"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="btn btn-outline-dark social-btn"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+
+            <!-- Liên kết đăng ký & quên mật khẩu -->
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none text-primary small">Quên mật khẩu?</a> |
+                <a href="#" class="text-decoration-none text-primary small">Đăng ký tài khoản</a>
+            </div>
+        </div>
+    </div>
+

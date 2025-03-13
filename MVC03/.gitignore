@@ -1,3 +1,35 @@
-/bin/
-/obj/
-/.vscode/
+# Build Folders
+bin/
+obj/
+
+# User-specific files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# IDE Files
+*.vscode/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+
+# Dotnet Specific
+project.lock.json
+artifacts/
+
+# Environment Variables
+.env
+
+# Resharper and Rider
+*.DotSettings.user
+
+# Other
+*.DS_Store
+Thumbs.db
