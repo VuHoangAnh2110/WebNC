@@ -43,7 +43,7 @@ dotnet restore
 Mở `appsettings.json` và chỉnh sửa chuỗi kết nối:
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=YOUR_SERVER;Database=MVC04DB;User Id=YOUR_USER;Password=YOUR_PASSWORD;"
+  "DefaultConnection": "Server=YOUR_SERVER;Database=NAME_DATABASE;User Id=YOUR_USER;Password=YOUR_PASSWORD;"
 }
 ```
 Chạy migration để tạo database:
@@ -75,12 +75,6 @@ Truy cập: [http://localhost:5000](http://localhost:5000)
 Khi người dùng xem sản phẩm, hệ thống lưu trữ vào session:
 ```csharp
 HttpContext.Session.SetString("ViewedProducts", JsonConvert.SerializeObject(viewedProducts));
-```
-Nếu gặp lỗi vòng lặp JSON (Self referencing loop), có thể dùng:
-```csharp
-services.AddControllers().AddNewtonsoftJson(options => {
-    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-});
 ```
 
 ## 📬 Liên Hệ
