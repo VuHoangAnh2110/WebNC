@@ -31,7 +31,7 @@ MVC04/
 ### 2️⃣ Cài Đặt Dự Án
 Clone repo về máy:
 ```sh
-git clone https://github.com/your-repo/MVC04.git
+git clone https://github.com/VuHoangAnh2110/WebNC.git
 cd MVC04
 ```
 Cài đặt các package cần thiết:
