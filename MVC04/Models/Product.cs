@@ -12,21 +12,21 @@ namespace MVC04.Models
 
         [Required]
         [StringLength(255)]
-        public string ProductName { get; set; }
+        public string? ProductName { get; set; }
 
         [Required]
         [Url]
         [RegularExpression(@".*\.png$", ErrorMessage = "Image must be a PNG file.")]
-        public string ImageURL { get; set; }
+        public string? ImageURL { get; set; }
 
         [Required]
         [Range(1, double.MaxValue, ErrorMessage = "Product price must be >= 0.")]
         public decimal ProductPrice { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         // Navigation property
-        public virtual ICollection<Nhanxet> NhanXets { get; set; }
+        public virtual ICollection<Nhanxet>? NhanXets { get; set; }
     }
 
 

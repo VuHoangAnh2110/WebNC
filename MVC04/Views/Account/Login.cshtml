@@ -10,14 +10,26 @@
 
             <form method="post" action="/Account/Login">
                 <div class="mb-3">
-                    <label for="Username" class="form-label">Tên đăng nhập</label>
-                    <input type="text" class="form-control" id="Username" name="Username" required="">
+                    <label for="ipemail" class="form-label">Email: </label>
+                    <input type="text" class="form-control" id="ipemail" name="ipemail" required=""
+                    @(ViewBag.Locked ? "disabled" : "")>
                 </div>
                 <div class="mb-3">
                     <label for="Password" class="form-label">Mật khẩu</label>
-                    <input type="password" class="form-control" id="Password" name="Password" required="">
+                    <input type="password" class="form-control" id="Password" name="Password" required=""
+                    @(ViewBag.Locked ? "disabled" : "")>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 btn-hover">Đăng nhập</button>
+                   <!-- Hiển thị thông báo lỗi nếu có -->
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <div class="alert alert-danger text-center">
+                            @ViewBag.Error
+                        </div>
+                    }
+                <button type="submit" class="btn btn-primary w-100 btn-hover"
+                @(ViewBag.Locked ? "disabled" : "")>
+                    Đăng nhập
+                </button>
             </form>
 
             <!-- Đăng nhập bằng mạng xã hội -->
@@ -34,7 +46,7 @@
             <!-- Liên kết đăng ký & quên mật khẩu -->
             <div class="text-center mt-3">
                 <a href="#" class="text-decoration-none text-primary small">Quên mật khẩu?</a> |
-                <a href="#" class="text-decoration-none text-primary small">Đăng ký tài khoản</a>
+                <a asp-controller="Account" asp-action="DangKy" class="text-decoration-none text-primary small">Đăng ký tài khoản</a>
             </div>
         </div>
     </div>

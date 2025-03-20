@@ -12,7 +12,7 @@ namespace MVC04.Models
         public int PK_iNhanxetID { get; set; }
 
         [Required]
-        public string sNoidung { get; set; }
+        public string? sNoidung { get; set; }
 
         [Required]
         public DateTime tThoigianGhinhan { get; set; } = DateTime.Now;
@@ -21,13 +21,13 @@ namespace MVC04.Models
         public int FK_iProductID { get; set; }
 
         [Required]
-        public string FK_MemberName { get; set; }
+        public string? FK_MemberID { get; set; }
 
         // Khóa ngoại
         [ForeignKey("FK_iProductID")]
-        public virtual Product Product { get; set; }
+        public virtual Product? Product { get; set; }
 
-        [ForeignKey("FK_MemberName")]
-        public virtual Member Member { get; set; }
+        [ForeignKey("FK_MemberID")]
+        public virtual Member? Member { get; set; }
     }
 }

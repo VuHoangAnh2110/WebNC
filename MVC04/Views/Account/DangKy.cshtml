@@ -1,0 +1,46 @@
+@model MVC04.Models.DangKyViewModel
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<div class="container d-flex justify-content-center align-items-center mt-3">
+    <div class="card shadow-lg p-4 rounded" style="max-width: 400px; width: 100%;">
+        <h2 class="text-center mb-3 text-primary">Đăng ký tài khoản</h2>
+        <form asp-action="DangKy" method="post">
+            <div class="mb-3">
+                <label asp-for="Fullname" class="form-label fw-bold">Họ và tên</label>
+                <input asp-for="Fullname" class="form-control border-primary" placeholder="Nhập họ tên">
+                <span asp-validation-for="Fullname" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label fw-bold">Email</label>
+                <input asp-for="Email" type="email" class="form-control border-primary" placeholder="Nhập email">
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label fw-bold">Mật khẩu</label>
+                <input asp-for="Password" type="password" class="form-control border-primary" placeholder="Nhập mật khẩu">
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label fw-bold">Xác nhận mật khẩu</label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control border-primary" placeholder="Nhập lại mật khẩu">
+                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 fw-bold">Đăng ký</button>
+
+            <div class="text-center mt-3">
+                <span class="text-muted small">Đã có tài khoản?</span>
+                <a asp-action="Login" class="text-decoration-none text-primary fw-bold">Đăng nhập</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

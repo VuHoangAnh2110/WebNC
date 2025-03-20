@@ -1,7 +1,10 @@
 using System.Diagnostics;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using MVC04.Data;
 using MVC04.Models;
+using Newtonsoft.Json;
 
 namespace MVC04.Controllers;
 
@@ -143,7 +146,50 @@ public class ProductController : Controller
         // Gán danh sách bình luận vào ViewBag
         ViewBag.Comments = comments;
 
+        LuuSPTam(product);
+
         return View(product);
+    }
+
+    private void LuuSPTam(Product product)
+    {
+        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+        string username = HttpContext.Session.GetString("Username");
+
+        if (!string.IsNullOrEmpty(username))
+        {
+            // Lấy danh sách sản phẩm đã lưu trong session
+            List<Product> viewedProducts = new List<Product>();
+
+            string sessionData = HttpContext.Session.GetString($"ViewedProducts_{username}");
+            if (!string.IsNullOrEmpty(sessionData))
+            {
+                viewedProducts = JsonConvert.DeserializeObject<List<Product>>(sessionData);
+            }
+
+            var productTemp = new Product
+            {
+                ProductID = product.ProductID,
+                ProductName = product.ProductName,
+                ImageURL = product.ImageURL,
+                ProductPrice = product.ProductPrice
+            };
+
+            // Kiểm tra nếu sản phẩm đã tồn tại trong danh sách thì không thêm vào
+            if (!viewedProducts.Any(p => p.ProductID == product.ProductID))
+            {
+                viewedProducts.Insert(0, productTemp); // Thêm sản phẩm mới vào đầu danh sách
+
+                // Giữ danh sách chỉ chứa tối đa 5 sản phẩm
+                if (viewedProducts.Count > 5)
+                {
+                    viewedProducts.RemoveAt(viewedProducts.Count - 1);
+                }
+
+                // Lưu lại vào session
+                HttpContext.Session.SetString($"ViewedProducts_{username}", JsonConvert.SerializeObject(viewedProducts));
+            }
+        }
     }
 
     // Nhận xét của tài khoản
@@ -168,7 +214,7 @@ public class ProductController : Controller
                 sNoidung = commentData.sNoidung,
                 tThoigianGhinhan = DateTime.Now,
                 FK_iProductID = commentData.FK_iProductID,
-                FK_MemberName = commentData.FK_MemberName
+                FK_MemberID = commentData.FK_MemberID
             };
 
             _nhanxetRepository.AddComment(newComment);
@@ -180,7 +226,7 @@ public class ProductController : Controller
                 message = "Bình luận đã được lưu.",
                 comment = new
                 {
-                    user = newComment.FK_MemberName,
+                    user = newComment.FK_MemberID,
                     content = newComment.sNoidung,
                     time = newComment.tThoigianGhinhan.ToString("dd/MM/yyyy HH:mm")
                 }
@@ -193,7 +239,7 @@ public class ProductController : Controller
                 sNoidung = commentData.sNoidung,
                 tThoigianGhinhan = DateTime.Now,
                 FK_iProductID = commentData.FK_iProductID,
-                FK_MemberName = commentData.FK_MemberName
+                FK_MemberID = commentData.FK_MemberID
             };
 
             return Json(new { success = false, message = "Lỗi server: " + ex.Message + newComment1.sNoidung});

@@ -25,7 +25,7 @@ namespace MVC04.Data
             modelBuilder.Entity<Nhanxet>()
                 .HasOne(n => n.Member)
                 .WithMany(m => m.NhanXets)
-                .HasForeignKey(n => n.FK_MemberName)
+                .HasForeignKey(n => n.FK_MemberID)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

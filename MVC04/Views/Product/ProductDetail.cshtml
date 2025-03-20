@@ -1,8 +1,23 @@
 @model MVC04.Models.Product
 @using Microsoft.AspNetCore.Http
+@using System.Net.Http.Json
+@using Newtonsoft.Json
 @inject IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = "Chi tiết sản phẩm";
+
+    // Lấy danh sách sản phẩm từ session
+    string username = HttpContextAccessor.HttpContext.Session.GetString("Username");
+    List<Product> viewedProducts = new List<Product>();
+
+    if (!string.IsNullOrEmpty(username))
+    {
+        string sessionData = HttpContextAccessor.HttpContext.Session.GetString($"ViewedProducts_{username}");
+        if (!string.IsNullOrEmpty(sessionData))
+        {
+            viewedProducts = JsonConvert.DeserializeObject<List<Product>>(sessionData);
+        }
+    }
 }
 
 <div class="container mt-4">
@@ -38,7 +53,7 @@
                         {
                             <div class="comment-box border rounded p-2 mb-2">
                                 <div class="row d-flex justify-content-between">
-                                    <strong>@comment.FK_MemberName</strong>
+                                    <strong>@comment.FK_MemberID</strong>
                                     <small class="text-muted">@comment.tThoigianGhinhan.ToString("dd/MM/yyyy HH:mm")</small>
                                 </div>
                                 <p class="text-muted mb-1">@comment.sNoidung</p>
@@ -63,6 +78,28 @@
             }
         </div>
     </div>
+
+    <!-- Sản phẩm đã xem gần đây -->
+    @if (viewedProducts.Count > 0)
+    {
+        <hr>
+        <h4 class="mt-4">Sản phẩm bạn đã xem gần đây</h4>
+        <div class="row">
+            @foreach (var product in viewedProducts)
+            {
+                <div class="col-md-3">
+                    <div class="card mb-3">
+                        <img src="@product.ImageURL" class="card-img-top" alt="@product.ProductName">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.ProductName</h5>
+                            <p class="card-text">@product.ProductPrice.ToString("N0") VND</p>
+                            <a href="@Url.Action("ProductDetail", "Product", new { id = product.ProductID })" class="btn btn-primary">Xem</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
 
 <!-- CSS -->
@@ -114,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 FK_iProductID: @Model.ProductID,
-                FK_MemberName: username,  // Thay bằng tên người dùng đăng nhập
+                FK_MemberID: username,  // Thay bằng tên người dùng đăng nhập
                 sNoidung: commentContent
             })
         })

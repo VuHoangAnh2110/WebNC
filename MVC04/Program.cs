@@ -9,6 +9,7 @@ builder.Services.AddControllersWithViews();
 // Đăng ký dịch vụ HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
