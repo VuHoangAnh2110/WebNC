@@ -31,6 +31,9 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult Login(string ipemail, string Password)
     {
+        ViewBag.Locked = HttpContext.Session.GetString("Locked") == "true";
+        ViewBag.Error = HttpContext.Session.GetString("LockoutMessage");
+
         // Xác định khóa session chung cho số lần nhập sai và thời gian khóa
         string failedLoginKey = "FailedLoginCount";
         string lockoutKey = "LockoutTime";
@@ -71,7 +74,7 @@ public class AccountController : Controller
             failedAttempts++;
             HttpContext.Session.SetInt32(failedLoginKey, failedAttempts);
 
-            if (failedAttempts >= 3)
+            if (failedAttempts >= 2)
             {
                 // Nếu nhập sai >= 3 lần, khóa tài khoản trong 30 phút
                 DateTime lockoutUntil = DateTime.UtcNow.AddMinutes(30);
